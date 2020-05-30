@@ -1,4 +1,5 @@
-# pet-project-f
+# my small project on vue js 
+В свободное время пишу свой проект для закрепления знаний и оттачивания навыков
 
 ## Project setup
 ```
@@ -20,5 +21,14 @@ npm run build
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Built With
+
+* [Vue CLI](https://cli.vuejs.org/) 
+
+## Author
+
+* **Nikita Lysenko** - Whole project - [widetrace](https://github.com/widetrace)
+
+## Acknowledgments
+
+* Предстоит еще много работы
