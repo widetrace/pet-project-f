@@ -5,8 +5,10 @@
       <router-link to="/">Home</router-link>
       <router-link to="/about">About</router-link>
     </div>
-    <router-view id="main"/>
-    <div id="latest-news"><p>Latest news here</p></div>
+    <router-view id="main" />
+    <div id="latest-news">
+      <p>Latest news here</p>
+    </div>
     <div id="footer">
       <span>made by widetrace. thanks to NHL Api</span>
     </div>
@@ -23,6 +25,19 @@
     "header header header"
     "nav main news"
     "footer footer footer";
+  grid-template-columns: 10vw 70vw 10vw;
+  grid-template-rows: 10vh 65vh 15vh;
+  grid-gap: 5vh 5vw;
+  background-color: #f3f3f3;
+}
+
+#header,
+#main,
+#latest-news,
+#footer {
+  border-radius: 4px;
+  box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8;
+  background-color: white;
 }
 
 #header {
