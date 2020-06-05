@@ -10,7 +10,13 @@ const game = {
   mutations: {
     setGameInfo(state, payload) {
       const { data, status } = payload;
-      console.log(status);
+      if (status === "previous") {
+        state.prevGame = data;
+      }
+
+      if (status === "next") {
+        state.nextGame = data;
+      }
     },
     setErrorMsg(state, payload) {
       state.errorMsg = payload;
@@ -48,7 +54,19 @@ const game = {
     },
   },
   getters: {
+    getInfo: (state) => (status) => {
+      if (status === "previous") {
+        return state.prevGame
+      }
 
+      if (status === "next") {
+        return state.nextGame
+      }
+
+      if (status !== "next" && status !== "previous") {
+        return false
+      }
+    },
   },
 };
 
