@@ -1,12 +1,20 @@
 <template>
   <div id="app">
-    <div id="header">My nhl web app</div>
-    <div id="nav">
-      <router-link to="/">Home</router-link>
-      <router-link to="/about">About</router-link>
+    <div id="header">
+      My nhl web app
     </div>
-    <router-view id="main"/>
-    <div id="latest-news"><p>Latest news here</p></div>
+    <div id="nav">
+      <router-link to="/">
+        Home
+      </router-link>
+      <router-link to="/about">
+        About
+      </router-link>
+    </div>
+    <router-view id="main" />
+    <div id="latest-news">
+      <p>Latest news here</p>
+    </div>
     <div id="footer">
       <span>made by widetrace. thanks to NHL Api</span>
     </div>
