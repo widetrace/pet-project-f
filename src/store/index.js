@@ -1,16 +1,19 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import game from './game';
+import Vue from "vue";
+import Vuex from "vuex";
+import game from "./game";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    test: 'test'
+    URL: "https://statsapi.web.nhl.com",
   },
-  mutations: {
-  },
-  actions: {
+  mutations: {},
+  actions: {},
+  getters: {
+    URL(state) {
+      return state.URL;
+    },
   },
   modules: {
     game,

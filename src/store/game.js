@@ -3,19 +3,35 @@ import axios from "axios";
 const game = {
   namespaced: true,
   state: {
-    prevGame: null,
-    nextGame: null,
+    prevGame: {
+      info: null,
+      title: null,
+    },
+    nextGame: {
+      info: null,
+      title: null,
+    },
     errorMsg: null,
   },
   mutations: {
     setGameInfo(state, payload) {
       const { data, status } = payload;
       if (status === "previous") {
-        state.prevGame = data;
+        state.prevGame.info = data;
       }
 
       if (status === "next") {
-        state.nextGame = data;
+        state.nextGame.info = data;
+      }
+    },
+    setTitle(state, payload) {
+      const { data, status } = payload;
+
+      if (status === "previous") {
+        state.prevGame.title = data;
+      }
+
+      if (status === "next") {
       }
     },
     setErrorMsg(state, payload) {
@@ -23,7 +39,7 @@ const game = {
     },
   },
   actions: {
-    fetchInfo({ commit }, payload) {
+    fetchInfo({ commit, rootGetters }, payload) {
       return new Promise((resolve, reject) => {
         if (payload !== "previous" && payload !== "next") {
           commit("setErrorMsg", "Wrong payload");
@@ -31,7 +47,7 @@ const game = {
         }
         axios
           .get(
-            `https://statsapi.web.nhl.com/api/v1/teams/16?expand=team.schedule.${payload}`
+            `${rootGetters.URL}/api/v1/teams/16?expand=team.schedule.${payload}`
           )
           .then((response) => {
             if (payload === "previous") {
@@ -49,22 +65,53 @@ const game = {
             }
             resolve(true);
           })
+          .catch((err) => {
+            reject(err);
+          });
+      });
+    },
+    fetchRecapText({ commit, rootGetters }, payload) {
+      const { link, status } = payload;
+      return new Promise((resolve, reject) => {
+        axios
+          .get(rootGetters.URL + link)
+          .then((response) => {
+            console.log(response.data.editorial.recap.items[0].preview);
+            commit("setTitle", {
+              data: response.data.editorial.recap.items[0].headline,
+              status,
+            });
+            resolve(true);
+          })
           .catch((err) => reject(err));
       });
     },
   },
   getters: {
-    getInfo: (state) => (status) => {
+    info: (state) => (status) => {
       if (status === "previous") {
-        return state.prevGame
+        return state.prevGame.info;
       }
 
       if (status === "next") {
-        return state.nextGame
+        return state.nextGame.info;
       }
 
       if (status !== "next" && status !== "previous") {
-        return false
+        return false;
+      }
+    },
+    title: (state) => (status) => {
+      if (status === "previous") {
+        return state.prevGame.title;
+      }
+
+      if (status === "next") {
+        return state.nextGame.title;
+      }
+
+      if (status !== "next" && status !== "previous") {
+        return false;
       }
     },
   },

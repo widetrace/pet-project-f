@@ -1,25 +1,43 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <GameCard v-if="prevGame && prevTitle" :game="prevGame" gameStatus="previous">
+      {{ prevTitle }}
+    </GameCard>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import GameCard from "@/components/GameCard";
 
 export default {
   name: "Home",
   components: {
-    HelloWorld
+    GameCard
   },
-  created() {
+  methods: {
+    getPrevTitle() {
+      this.$store
+        .dispatch("game/fetchRecapText", {
+          link: this.prevGame.content.link,
+          status: "previous"
+        })
+        .catch(err => console.error(err));
+    }
+  },
+  computed: {
+    prevGame() {
+      return this.$store.getters["game/info"]("previous");
+    },
+    prevTitle() {
+      return this.$store.getters["game/title"]("previous");
+    }
+  },
+  beforeMount() {
     this.$store
       .dispatch("game/fetchInfo", "previous")
-      .then(() => {
-        console.log(this.$store.getters["game/getInfo"]("previous"))
-      })
+      .then(() => {this.getPrevTitle()})
       .catch(err => console.error(err));
   }
 };
