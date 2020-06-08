@@ -32,7 +32,7 @@
     "nav main news"
     "footer footer footer";
   grid-template-columns: 10vw 70vw 10vw;
-  grid-template-rows: 10vh 65vh 15vh;
+  grid-template-rows: 10vh 75vh 5vh;
   grid-gap: 5vh 5vw;
   background-color: #f3f3f3;
 }
