@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <img width="50px" alt="Vue logo" src="../assets/logo.png" />
     <GameCard v-if="prevGame && prevTitle" :game="prevGame" gameStatus="previous">
       {{ prevTitle }}
     </GameCard>
