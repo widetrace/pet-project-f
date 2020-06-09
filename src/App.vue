@@ -1,9 +1,15 @@
 <template>
   <div id="app">
-    <div id="header">My nhl web app</div>
+    <div id="header">
+      My nhl web app
+    </div>
     <div id="nav">
-      <router-link to="/">Home</router-link>
-      <router-link to="/about">About</router-link>
+      <router-link to="/">
+        Home
+      </router-link>
+      <router-link to="/about">
+        About
+      </router-link>
     </div>
     <router-view id="main" />
     <div id="latest-news">
@@ -26,14 +32,13 @@
     "nav main news"
     "footer footer footer";
   grid-template-columns: 10vw 70vw 10vw;
-  grid-template-rows: 10vh 65vh 15vh;
+  grid-template-rows: 10vh 75vh 5vh;
   grid-gap: 5vh 5vw;
   background-color: #f3f3f3;
 }
 
 #header,
 #main,
-#latest-news,
 #footer {
   border-radius: 4px;
   box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8;
