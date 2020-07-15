@@ -63,7 +63,6 @@ export default {
       .catch(err => console.error(err));
     this.$store
       .dispatch("game/fetchInfo", "next")
-      .then(() => console.log(this.$store.getters["game/info"]("next")))
       .catch(err => console.error(err))
   }
 };

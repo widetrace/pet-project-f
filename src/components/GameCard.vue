@@ -35,9 +35,6 @@ export default {
       return moment(this.game.gameDate).format("HH:mm")
     }
   },
-  created() {
-    console.log(this.game);
-  }
 };
 </script>
 
