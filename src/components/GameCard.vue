@@ -49,6 +49,7 @@ export default {
     minmax(75px, 0.33fr)
     minmax(150px, 1.67fr)
     minmax(50px, 0.33fr);
+  grid-template-columns: 1fr 1fr;
   grid-template-areas:
     "title title"
     "away home"
@@ -84,6 +85,6 @@ export default {
 }
 
 img {
-  width: 150px;
+  width: 200px;
 }
 </style>
