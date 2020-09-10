@@ -1,4 +1,4 @@
-import logosUrl from "@/store/dbLogo";
+import logosUrl from '@/store/dbLogo';
 
 const logo = {
   namespaced: true,
@@ -6,26 +6,23 @@ const logo = {
     logos: logosUrl,
   },
   getters: {
-    test(state) {
-      console.log(state.logos);
-    },
     url: (state) => (payload) => {
       // Ищем в общем списке подходящую команду
-      const rightTeam = state.logos.data.find(team => {
+      const rightTeam = state.logos.data.find((team) => {
         if (team.mostRecentTeamId === payload) {
-          return true
+          return true;
         }
-        return false
-      })
+        return false;
+      });
       // Находим самый свежий логотип
-      const logo = rightTeam.teams[0].logos.find(logo => {
-        if (logo.endSeason > 20152016) {
-          return true
-        } 
-        return false
-      })
+      const requiredLogo = rightTeam.teams[0].logos.find((teamLogo) => {
+        if (teamLogo.endSeason > 20152016) {
+          return true;
+        }
+        return false;
+      });
       // TODO: Обработчик, на случай, если нашлось несколько логотипов
-      return logo.secureUrl
+      return requiredLogo.secureUrl;
     },
   },
 };

@@ -1,13 +1,13 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import game from "./game";
-import logo from "./logo"
+import Vue from 'vue';
+import Vuex from 'vuex';
+import game from './game';
+import logo from './logo';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    URL: "https://statsapi.web.nhl.com",
+    URL: 'https://statsapi.web.nhl.com',
   },
   mutations: {},
   actions: {},
@@ -17,6 +17,6 @@ export default new Vuex.Store({
     },
   },
   modules: {
-    game, logo
+    game, logo,
   },
 });

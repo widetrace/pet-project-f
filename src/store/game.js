@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 const game = {
   namespaced: true,
@@ -16,23 +16,23 @@ const game = {
   mutations: {
     setGameInfo(state, payload) {
       const { data, status } = payload;
-      if (status === "previous") {
+      if (status === 'previous') {
         state.prevGame.info = data;
       }
 
-      if (status === "next") {
+      if (status === 'next') {
         state.nextGame.info = data;
       }
     },
     setTitle(state, payload) {
       const { data, status } = payload;
 
-      if (status === "previous") {
+      if (status === 'previous') {
         state.prevGame.title = data;
       }
 
-      if (status === "next") {
-      }
+      // if (status === 'next') {
+      // }
     },
     setErrorMsg(state, payload) {
       state.errorMsg = payload;
@@ -41,26 +41,28 @@ const game = {
   actions: {
     fetchInfo({ commit, rootGetters }, payload) {
       return new Promise((resolve, reject) => {
-        if (payload !== "previous" && payload !== "next") {
-          commit("setErrorMsg", "Wrong payload");
-          reject("Wrong payload");
+        if (payload !== 'previous' && payload !== 'next') {
+          commit('setErrorMsg', 'Wrong payload');
+          reject(new Error('Wrong payload'));
         }
         axios
           .get(
-            `${rootGetters.URL}/api/v1/teams/16?expand=team.schedule.${payload}`
+            `${rootGetters.URL}/api/v1/teams/16?expand=team.schedule.${payload}`,
           )
           .then((response) => {
-            if (payload === "previous") {
-              commit("setGameInfo", {
+            if (
+              payload === 'previous'
+              && response.data.teams[0].previousGameSchedule
+            ) {
+              commit('setGameInfo', {
                 data:
                   response.data.teams[0].previousGameSchedule.dates[0].games[0],
-                status: "previous",
+                status: 'previous',
               });
-            }
-            if (payload === "next") {
-              commit("setGameInfo", {
+            } else if (payload === 'next' && response.data.teams[0].nextGameSchedule) {
+              commit('setGameInfo', {
                 data: response.data.teams[0].nextGameSchedule.dates[0].games[0],
-                status: "next",
+                status: 'next',
               });
             }
             resolve(true);
@@ -77,7 +79,7 @@ const game = {
           .get(rootGetters.URL + link)
           .then((response) => {
             console.log(response.data.editorial.recap.items[0].preview);
-            commit("setTitle", {
+            commit('setTitle', {
               data: response.data.editorial.recap.items[0].headline,
               status,
             });
@@ -89,28 +91,28 @@ const game = {
   },
   getters: {
     info: (state) => (status) => {
-      if (status === "previous") {
+      if (status === 'previous') {
         return state.prevGame.info;
       }
 
-      if (status === "next") {
+      if (status === 'next') {
         return state.nextGame.info;
       }
 
-      if (status !== "next" && status !== "previous") {
+      if (status !== 'next' && status !== 'previous') {
         return false;
       }
     },
     title: (state) => (status) => {
-      if (status === "previous") {
+      if (status === 'previous') {
         return state.prevGame.title;
       }
 
-      if (status === "next") {
+      if (status === 'next') {
         return state.nextGame.title;
       }
 
-      if (status !== "next" && status !== "previous") {
+      if (status !== 'next' && status !== 'previous') {
         return false;
       }
     },
