@@ -1,58 +1,26 @@
-<template>
-  <div>
-    <div v-if="game == null">
-      <h1>
-        <slot />
-      </h1>
-    </div>
-    <div
-      class="game"
-      v-else
-    >
-      <h1>
-        <slot />
-      </h1>
-      <div class="team-away">
-        <img
-          :src="awayTeamLogo"
-          alt="Away team logo"
-        >
-        <p v-if="gameStatus == 'previous'">
-          {{ game.teams.away.score }}
-        </p>
-      </div>
-      <div class="team-home">
-        <img
-          :src="homeTeamLogo"
-          alt="Home team logo"
-        >
-        <p v-if="gameStatus == 'previous'">
-          {{ game.teams.home.score }}
-        </p>
-      </div>
-      <p class="date">
-        {{ date }}
-      </p>
-      <p class="time">
-        {{ time }}
-      </p>
-    </div>
-  </div>
+<template lang="pug">
+  .game-card
+    .game
+      h1
+        slot
+      .team-away
+        img(:src="awayTeamLogo", alt="Away team logo")
+        p(v-if="gameStatus == 'previous'") {{ game.teams.away.score }}
+      .team-home
+        img(:src="homeTeamLogo", alt="Home team logo")
+        p(v-if="gameStatus == 'previous'") {{ game.teams.home.score }}
+      p.date {{ date }}
+      p.time {{ time }}
 </template>
 
 <script>
 import moment from 'moment';
 
 export default {
-  // props: ['game', 'gameStatus'],
   props: {
     game: {
       default: null,
-      validator(value) {
-        return (
-          typeof value === 'object'
-        );
-      },
+      type: Object,
     },
     gameStatus: {
       type: String,
@@ -78,7 +46,6 @@ export default {
 
 <style lang="scss" scoped>
 .game {
-  // height: 75vh;
   border-radius: 4px;
   box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8;
   background-color: white;

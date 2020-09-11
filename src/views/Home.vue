@@ -1,51 +1,21 @@
-<template>
-  <div class="home">
-    <GameCard
-      v-if="prevGame && prevTitle"
-      :game="prevGame"
-      game-status="previous"
-    >
-      {{ prevTitle }}
-    </GameCard>
-
-    <GameCard
-      v-else
-      :game="null"
-      game-status="previous"
-    >
-      <span> No info about previous game </span>
-    </GameCard>
-
-    <GameCard
-      v-if="nextGame"
-      :game="nextGame"
-      game-status="next"
-    >
-      {{ nextTitle }}
-    </GameCard>
-
-    <GameCard
-      v-else
-      :game="null"
-      game-status="next"
-    >
-      <span> No info about next game </span>
-    </GameCard>
-  </div>
+<template lang="pug">
+  .home
+    GameCard(v-if="prevGame && prevTitle", :game="prevGame", game-status="previous") {{ prevTitle }}
+    EmptyCard(v-else) No info about previous game
+    GameCard(v-if="nextGame != null" :game="nextGame" game-status="next") {{ nextTitle }}
+    EmptyCard(v-else) No info about previous game
 </template>
 
 <script>
 // @ is an alias to /src
 import GameCard from '@/components/GameCard.vue';
+import EmptyCard from '@/components/EmptyCard.vue';
 
 export default {
   name: 'Home',
   components: {
-    GameCard,
+    GameCard, EmptyCard,
   },
-  data: () => ({
-    // test: 'test'
-  }),
   methods: {
     getPrevTitle() {
       this.$store

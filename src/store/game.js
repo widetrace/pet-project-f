@@ -31,6 +31,7 @@ const game = {
         state.prevGame.title = data;
       }
 
+      // Check titles for next game on API
       // if (status === 'next') {
       // }
     },
@@ -78,7 +79,6 @@ const game = {
         axios
           .get(rootGetters.URL + link)
           .then((response) => {
-            console.log(response.data.editorial.recap.items[0].preview);
             commit('setTitle', {
               data: response.data.editorial.recap.items[0].headline,
               status,
@@ -99,9 +99,7 @@ const game = {
         return state.nextGame.info;
       }
 
-      if (status !== 'next' && status !== 'previous') {
-        return false;
-      }
+      return false;
     },
     title: (state) => (status) => {
       if (status === 'previous') {
@@ -112,9 +110,7 @@ const game = {
         return state.nextGame.title;
       }
 
-      if (status !== 'next' && status !== 'previous') {
-        return false;
-      }
+      return false;
     },
   },
 };
