@@ -1,8 +1,9 @@
 <template lang="pug">
   .home
+    //- GameCard(v-if="nextGame != null" :game="nextGame" game-status="next") {{ nextTitle }}
+    //- EmptyCard(v-else) No info about next game
     GameCard(v-if="prevGame && prevTitle", :game="prevGame", game-status="previous") {{ prevTitle }}
-    EmptyCard(v-else) No info about previous game
-    GameCard(v-if="nextGame != null" :game="nextGame" game-status="next") {{ nextTitle }}
+    GameCard(v-if="prevGame && prevTitle", :game="prevGame", game-status="previous") {{ prevTitle }}
     EmptyCard(v-else) No info about previous game
 </template>
 
@@ -70,8 +71,17 @@ export default {
 
 <style lang="scss" scoped>
 .home {
-  display: grid;
-  grid-gap: 50px;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  div:first-child {
+    margin-right: 25px;
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  .home {
+    flex-flow: column nowrap;
+  }
 }
 </style>
