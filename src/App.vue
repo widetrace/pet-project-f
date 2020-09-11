@@ -1,17 +1,30 @@
 <template lang="pug">
   #app
     #header
+      router-link(to="/")
+        icon-base(width="100px", height="100px", iconColor="black", iconTitle="NHL Logo")
+          icon-league
       h1 NHL Web App
-    #nav
-      h2 Menu
-      router-link(to="/") Home
-      router-link(to="/about") About
+      .smth
+    navigation
     router-view#main
     #latest-news
       h2 Latest news
     #footer
       span Made by widetrace. Thanks to NHL Api
 </template>
+
+<script>
+import Navigation from '@/components/Navigation.vue';
+import IconBase from '@/components/icons/IconBase.vue';
+import IconLeague from '@/components/icons/IconLeague.vue';
+
+export default {
+  components: {
+    Navigation, IconBase, IconLeague,
+  },
+};
+</script>
 
 <style lang="scss">
 #app {
@@ -27,7 +40,7 @@
   grid-template-columns: 0.33fr 2fr 1fr;
   grid-template-rows: 0.33fr 4fr 0.33fr;
   grid-gap: 3vh 5vw;
-  background-color: #f3f3f3;
+  background-color: $background;
 }
 
 #header,
@@ -41,25 +54,10 @@
 
 #header {
   grid-area: header;
-}
-
-#nav {
-  grid-area: nav;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  padding: 30px;
-  padding-top: 0;
   display: flex;
-  flex-flow: column nowrap;
-  a {
-    font-weight: bold;
-    color: $primary;
-    text-decoration: none;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
 }
 
 #main {
@@ -78,6 +76,21 @@
   padding-top: 10px;
   span {
     margin: 10px;
+  }
+}
+
+h2 {
+  width: 100%;
+  background-color: $background;
+  padding-top: 0.83em;
+  padding-bottom: 0.83em;
+  margin: 0;
+}
+
+@media screen and (max-width: 1280px) {
+  #app {
+    grid-gap: 3vh 2.5vw;
+    grid-template-columns: 0.33fr 3.33fr 1fr;
   }
 }
 </style>

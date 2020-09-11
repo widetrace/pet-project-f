@@ -1,8 +1,7 @@
 <template lang="pug">
   .home
-    //- GameCard(v-if="nextGame != null" :game="nextGame" game-status="next") {{ nextTitle }}
-    //- EmptyCard(v-else) No info about next game
-    GameCard(v-if="prevGame && prevTitle", :game="prevGame", game-status="previous") {{ prevTitle }}
+    GameCard(v-if="nextGame != null" :game="nextGame" game-status="next") {{ nextTitle }}
+    EmptyCard(v-else) No info about next game
     GameCard(v-if="prevGame && prevTitle", :game="prevGame", game-status="previous") {{ prevTitle }}
     EmptyCard(v-else) No info about previous game
 </template>
@@ -82,6 +81,10 @@ export default {
 @media screen and (max-width: 1280px) {
   .home {
     flex-flow: column nowrap;
+    div:first-child {
+      margin-right: 0px;
+      margin-bottom: 15px;
+  }
   }
 }
 </style>
