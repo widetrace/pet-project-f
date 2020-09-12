@@ -1,4 +1,4 @@
-import axios from 'axios';
+import EventServivce from '@/services/EventService';
 
 const game = {
   namespaced: true,
@@ -14,17 +14,7 @@ const game = {
     errorMsg: null,
   },
   mutations: {
-    setGameInfo(state, payload) {
-      const { data, status } = payload;
-      if (status === 'previous') {
-        state.prevGame.info = data;
-      }
-
-      if (status === 'next') {
-        state.nextGame.info = data;
-      }
-    },
-    setTitle(state, payload) {
+    SET_TITLE(state, payload) {
       const { data, status } = payload;
 
       if (status === 'previous') {
@@ -35,58 +25,73 @@ const game = {
       // if (status === 'next') {
       // }
     },
-    setErrorMsg(state, payload) {
+    SET_ERROR_MSG(state, payload) {
       state.errorMsg = payload;
+    },
+    SET_GAME_INFO(state, { data, status }) {
+      switch (status) {
+        case 'previous': {
+          state.prevGame.info = data;
+          break;
+        }
+        case 'next': {
+          state.nextGame.info = data;
+          break;
+        }
+        default: {
+          // eslint-disable-next-line no-console
+          console.error('Something goes wrong');
+        }
+      }
     },
   },
   actions: {
-    fetchInfo({ commit, rootGetters }, payload) {
-      return new Promise((resolve, reject) => {
-        if (payload !== 'previous' && payload !== 'next') {
-          commit('setErrorMsg', 'Wrong payload');
-          reject(new Error('Wrong payload'));
-        }
-        axios
-          .get(
-            `${rootGetters.URL}/api/v1/teams/16?expand=team.schedule.${payload}`,
-          )
-          .then((response) => {
-            if (
-              payload === 'previous'
-              && response.data.teams[0].previousGameSchedule
-            ) {
-              commit('setGameInfo', {
-                data:
-                  response.data.teams[0].previousGameSchedule.dates[0].games[0],
+    getInfo({ commit, dispatch, rootState }, payload) {
+      if (payload !== 'previous' && payload !== 'next') {
+        commit('SET_ERROR_MSG', 'Wrong payload');
+        return false;
+      }
+      return (
+        EventServivce.getGameInfo(rootState.selectedTeam, payload)
+          .then((res) => {
+            const data = res.data.teams[0];
+            if (!(data.previousGameSchedule || data.nextGameSchedule)) {
+              return false;
+            }
+
+            commit('SET_GAME_INFO', {
+              data:
+                payload === 'previous'
+                  ? data.previousGameSchedule.dates[0].games[0]
+                  : data.nextGameSchedule.dates[0].games[0],
+              status: payload,
+            });
+
+            if (payload === 'previous') {
+              dispatch('fetchRecapText', {
+                link: data.previousGameSchedule.dates[0].games[0].content.link,
                 status: 'previous',
               });
-            } else if (payload === 'next' && response.data.teams[0].nextGameSchedule) {
-              commit('setGameInfo', {
-                data: response.data.teams[0].nextGameSchedule.dates[0].games[0],
-                status: 'next',
-              });
             }
-            resolve(true);
+
+            return true;
           })
-          .catch((err) => {
-            reject(err);
-          });
-      });
+          // eslint-disable-next-line no-console
+          .catch((err) => console.error(err))
+      );
     },
-    fetchRecapText({ commit, rootGetters }, payload) {
+    fetchRecapText({ commit }, payload) {
       const { link, status } = payload;
-      return new Promise((resolve, reject) => {
-        axios
-          .get(rootGetters.URL + link)
-          .then((response) => {
-            commit('setTitle', {
-              data: response.data.editorial.recap.items[0].headline,
-              status,
-            });
-            resolve(true);
-          })
-          .catch((err) => reject(err));
-      });
+
+      return EventServivce.getRecapText(link)
+        .then((res) => {
+          commit('SET_TITLE', {
+            data: res.data.editorial.recap.items[0].headline,
+            status,
+          });
+        })
+        // eslint-disable-next-line no-console
+        .catch((err) => console.error(err));
     },
   },
   getters: {

@@ -16,12 +16,11 @@
 
 <script>
 import Navigation from '@/components/Navigation.vue';
-import IconBase from '@/components/icons/IconBase.vue';
 import IconLeague from '@/components/icons/IconLeague.vue';
 
 export default {
   components: {
-    Navigation, IconBase, IconLeague,
+    Navigation, IconLeague,
   },
 };
 </script>

@@ -1,8 +1,14 @@
 <template lang="pug">
   .home
-    GameCard(v-if="nextGame != null" :game="nextGame" game-status="next") {{ nextTitle }}
+    GameCard(
+      v-if="nextGameStatus",
+      :game="nextGame"
+      game-status="next") {{ nextTitle }}
     EmptyCard(v-else) No info about next game
-    GameCard(v-if="prevGame && prevTitle", :game="prevGame", game-status="previous") {{ prevTitle }}
+    GameCard(
+      v-if="prevGameStatus",
+      :game="gameInfo('previous')",
+      game-status="previous") {{ prevTitle }}
     EmptyCard(v-else) No info about previous game
 </template>
 
@@ -10,22 +16,18 @@
 // @ is an alias to /src
 import GameCard from '@/components/GameCard.vue';
 import EmptyCard from '@/components/EmptyCard.vue';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'Home',
+  data: () => ({
+    prevGameStatus: false,
+    nextGameStatus: false,
+  }),
   components: {
     GameCard, EmptyCard,
   },
   methods: {
-    getPrevTitle() {
-      this.$store
-        .dispatch('game/fetchRecapText', {
-          link: this.prevGame.content.link,
-          status: 'previous',
-        })
-        // eslint-disable-next-line no-console
-        .catch((err) => console.error(err));
-    },
     getNextTitle() {
       this.$store
         .dispatch('game/fetchRecapText', {
@@ -37,33 +39,45 @@ export default {
     },
   },
   computed: {
+    ...mapGetters(
+      {
+        gameInfo: 'game/info',
+        gameTitle: 'game/title',
+      },
+    ),
     prevGame() {
-      return this.$store.getters['game/info']('previous');
+      return this.gameInfo('previous');
     },
     prevTitle() {
-      return this.$store.getters['game/title']('previous');
+      return this.gameTitle('previous');
     },
     nextGame() {
-      return this.$store.getters['game/info']('next');
+      return this.gameInfo('next');
     },
     nextTitle() {
       // title from api still testing
       // this.getNextTitle()
       return `${this.nextGame.teams.home.team.name} will face ${this.nextGame.teams.away.team.name} at ${this.nextGame.venue.name}`;
     },
+
   },
   created() {
-    this.$store
-      .dispatch('game/fetchInfo', 'previous')
-      .then(() => {
-        this.getPrevTitle();
-      })
-      // eslint-disable-next-line no-console
-      .catch((err) => console.error(err));
-    this.$store
-      .dispatch('game/fetchInfo', 'next')
-      // eslint-disable-next-line no-console
-      .catch((err) => console.error(err));
+    this.$store.dispatch('game/getInfo', 'previous')
+      .then((res) => {
+        if (res === false) {
+          this.prevGameStatus = false;
+        } else {
+          this.prevGameStatus = true;
+        }
+      });
+    this.$store.dispatch('game/getInfo', 'next')
+      .then((res) => {
+        if (res === false) {
+          this.nextGameStatus = false;
+        } else {
+          this.nextGameStatus = true;
+        }
+      });
   },
 };
 </script>

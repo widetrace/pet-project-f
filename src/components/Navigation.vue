@@ -14,13 +14,12 @@
 </template>
 
 <script>
-import IconBase from '@/components/icons/IconBase.vue';
 import IconVk from '@/components/icons/IconVk.vue';
 import IconTelegram from '@/components/icons/IconTelegram.vue';
 
 export default {
   components: {
-    IconBase, IconVk, IconTelegram,
+    IconVk, IconTelegram,
   },
 };
 </script>
