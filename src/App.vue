@@ -9,18 +9,19 @@
     navigation
     router-view#main
     #latest-news
-      h2 Latest news
+      news-widget
     #footer
       span Made by widetrace. Thanks to NHL Api
 </template>
 
 <script>
 import Navigation from '@/components/Navigation.vue';
+import NewsWidget from '@/components/NewsWidget.vue';
 import IconLeague from '@/components/icons/IconLeague.vue';
 
 export default {
   components: {
-    Navigation, IconLeague,
+    Navigation, IconLeague, NewsWidget,
   },
 };
 </script>
@@ -34,9 +35,9 @@ export default {
   display: grid;
   grid-template-areas:
     "header header header"
-    "nav main news"
+    "nav news main"
     "footer footer footer";
-  grid-template-columns: 0.33fr 2fr 1fr;
+  grid-template-columns: 0.33fr 3fr 1fr;
   grid-template-rows: 0.33fr 4fr 0.33fr;
   grid-gap: 3vh 5vw;
   background-color: $background;
@@ -59,14 +60,17 @@ export default {
   align-items: center;
 }
 
+#nav {
+  margin-left: 2vw;
+}
+
 #main {
   grid-area: main;
+  margin-right: 2vw;
 }
 
 #latest-news {
   grid-area: news;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
 }
 
 #footer {
@@ -76,6 +80,10 @@ export default {
   span {
     margin: 10px;
   }
+}
+
+h1 {
+  font-size: 1.5em;
 }
 
 h2 {

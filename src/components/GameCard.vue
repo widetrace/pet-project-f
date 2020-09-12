@@ -9,8 +9,8 @@
       .team-home
         img(:src="homeTeamLogo", alt="Home team logo")
         p(v-if="gameStatus == 'previous'") {{ game.teams.home.score }}
-      p.date {{ date }}
-      p.time {{ time }}
+      p.date Date: {{ date }}
+      p.time Time: {{ time }}
 </template>
 
 <script>
@@ -92,6 +92,6 @@ export default {
 }
 
 img {
-  width: 200px;
+  min-width: 100px;
 }
 </style>

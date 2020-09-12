@@ -27,8 +27,6 @@ export default {
 <style lang="scss" scoped>
 #nav {
   grid-area: nav;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;

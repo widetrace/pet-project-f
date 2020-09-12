@@ -85,7 +85,8 @@ export default {
 <style lang="scss" scoped>
 .home {
   display: flex;
-  flex-flow: row nowrap;
+  // flex-flow: row nowrap;
+  flex-flow: column nowrap;
   justify-content: space-between;
   div:first-child {
     margin-right: 25px;
