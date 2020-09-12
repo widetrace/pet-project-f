@@ -51,34 +51,32 @@ const game = {
         commit('SET_ERROR_MSG', 'Wrong payload');
         return false;
       }
-      return (
-        EventServivce.getGameInfo(rootState.selectedTeam, payload)
-          .then((res) => {
-            const data = res.data.teams[0];
-            if (!(data.previousGameSchedule || data.nextGameSchedule)) {
-              return false;
-            }
+      return EventServivce.getGameInfo(rootState.selectedTeam, payload)
+        .then((res) => {
+          const data = res.data.teams[0];
+          if (!(data.previousGameSchedule || data.nextGameSchedule)) {
+            return false;
+          }
 
-            commit('SET_GAME_INFO', {
-              data:
+          commit('SET_GAME_INFO', {
+            data:
                 payload === 'previous'
                   ? data.previousGameSchedule.dates[0].games[0]
                   : data.nextGameSchedule.dates[0].games[0],
-              status: payload,
+            status: payload,
+          });
+
+          if (payload === 'previous') {
+            dispatch('fetchRecapText', {
+              link: data.previousGameSchedule.dates[0].games[0].content.link,
+              status: 'previous',
             });
+          }
 
-            if (payload === 'previous') {
-              dispatch('fetchRecapText', {
-                link: data.previousGameSchedule.dates[0].games[0].content.link,
-                status: 'previous',
-              });
-            }
-
-            return true;
-          })
-          // eslint-disable-next-line no-console
-          .catch((err) => console.error(err))
-      );
+          return true;
+        })
+      // eslint-disable-next-line no-console
+        .catch((err) => console.error(err));
     },
     fetchRecapText({ commit }, payload) {
       const { link, status } = payload;
