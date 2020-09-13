@@ -11,7 +11,6 @@ const game = {
       info: null,
       title: null,
     },
-    errorMsg: null,
   },
   mutations: {
     SET_TITLE(state, payload) {
@@ -75,8 +74,13 @@ const game = {
 
           return true;
         })
-      // eslint-disable-next-line no-console
-        .catch((err) => console.error(err));
+        .catch((err) => {
+          const notification = {
+            type: 'error',
+            message: `There was a problem fetching game info ${err.message}`,
+          };
+          dispatch('notification/add', notification, { root: true });
+        });
     },
     fetchRecapText({ commit }, payload) {
       const { link, status } = payload;

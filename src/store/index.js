@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import notification from '@/store/modules/notification';
 import game from './game';
 import logo from './logo';
 
@@ -12,6 +13,8 @@ export default new Vuex.Store({
   mutations: {},
   actions: {},
   modules: {
-    game, logo,
+    game,
+    logo,
+    notification,
   },
 });
