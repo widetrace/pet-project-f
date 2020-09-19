@@ -6,7 +6,7 @@
       game-status="next") {{ nextTitle }}
     EmptyCard(v-else) No info about next game
     GameCard(
-      v-if="prevGameStatus",
+      v-if="previousGameStatus",
       :game="gameInfo('previous')",
       game-status="previous") {{ prevTitle }}
     EmptyCard(v-else) No info about previous game
@@ -20,10 +20,16 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'Home',
-  data: () => ({
-    prevGameStatus: false,
-    nextGameStatus: false,
-  }),
+  props: {
+    nextGameStatus: {
+      required: true,
+      type: Boolean,
+    },
+    previousGameStatus: {
+      required: true,
+      type: Boolean,
+    },
+  },
   components: {
     GameCard, EmptyCard,
   },
@@ -59,25 +65,6 @@ export default {
       // this.getNextTitle()
       return `${this.nextGame.teams.home.team.name} will face ${this.nextGame.teams.away.team.name} at ${this.nextGame.venue.name}`;
     },
-
-  },
-  created() {
-    this.$store.dispatch('game/getInfo', 'previous')
-      .then((res) => {
-        if (res === false) {
-          this.prevGameStatus = false;
-        } else {
-          this.prevGameStatus = true;
-        }
-      });
-    this.$store.dispatch('game/getInfo', 'next')
-      .then((res) => {
-        if (res === false) {
-          this.nextGameStatus = false;
-        } else {
-          this.nextGameStatus = true;
-        }
-      });
   },
 };
 </script>

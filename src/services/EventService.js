@@ -1,6 +1,6 @@
 //  import axios
 import axios from 'axios';
-import NProgress from 'nprogress';
+// import NProgress from 'nprogress';
 
 const apiClient = axios.create({
   baseURL: 'https://statsapi.web.nhl.com',
@@ -9,17 +9,12 @@ const apiClient = axios.create({
     Accept: 'application/json',
     'Content-Type': 'application/json',
   },
+  timeout: 10000,
 });
 
-apiClient.interceptors.request.use((config) => {
-  NProgress.start();
-  return config;
-});
+apiClient.interceptors.request.use((config) => config);
 
-apiClient.interceptors.response.use((response) => {
-  NProgress.done();
-  return response;
-});
+apiClient.interceptors.response.use((response) => response);
 
 export default {
   getGameInfo(id, status) {
