@@ -37,7 +37,7 @@ export default {
     "header header header"
     "nav news main"
     "footer footer footer";
-  grid-template-columns: 0.33fr 3fr 1fr;
+  grid-template-columns: 0.66fr 3fr 1fr;
   grid-template-rows: 0.33fr 4fr 0.33fr;
   grid-gap: 3vh 5vw;
   background-color: $background;
