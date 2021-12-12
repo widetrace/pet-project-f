@@ -23,7 +23,7 @@ const routes = [
           });
         })
         .catch((error) => {
-          if (error.respnse && error.response.status == 404) {
+          if (error.respnse && error.response.status === 404) {
             next({ name: '404' });
           } else {
             next({ name: 'network-issue' });

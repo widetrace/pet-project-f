@@ -1,16 +1,16 @@
 <template lang="pug">
-  .game-card
-    .game
-      h1
-        slot
-      .team-away
-        img(:src="awayTeamLogo", alt="Away team logo")
-        p(v-if="gameStatus == 'previous'") {{ game.teams.away.score }}
-      .team-home
-        img(:src="homeTeamLogo", alt="Home team logo")
-        p(v-if="gameStatus == 'previous'") {{ game.teams.home.score }}
-      p.date Date: {{ date }}
-      p.time Time: {{ time }}
+.game-card
+  .game
+    h1
+      slot
+    .team-away
+      img(:src="awayTeamLogo", alt="Away team logo")
+      p(v-if="gameStatus == 'previous'") {{ game.teams.away.score }}
+    .team-home
+      img(:src="homeTeamLogo", alt="Home team logo")
+      p(v-if="gameStatus == 'previous'") {{ game.teams.home.score }}
+    p.date Date: {{ date }}
+    p.time Time: {{ time }}
 </template>
 
 <script>
@@ -26,6 +26,9 @@ export default {
       type: String,
       required: true,
     },
+  },
+  mounted() {
+    console.log(this.game);
   },
   computed: {
     awayTeamLogo() {
@@ -68,7 +71,8 @@ export default {
   }
 }
 
-.team-away, .team-home {
+.team-away,
+.team-home {
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;

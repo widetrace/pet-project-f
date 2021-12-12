@@ -1,17 +1,22 @@
 <template lang="pug">
-  #app
-    #header
-      router-link(to="/")
-        icon-base(width="100px", height="100px", iconColor="black", iconTitle="NHL Logo")
-          icon-league
-      h1 NHL Web App
-      .smth
-    navigation
-    router-view#main
-    #latest-news
-      news-widget
-    #footer
-      span Made by widetrace. Thanks to NHL Api
+#app
+  #header
+    router-link(to="/")
+      icon-base(
+        width="100px",
+        height="100px",
+        iconColor="black",
+        iconTitle="NHL Logo"
+      )
+        icon-league
+    h1 NHL Web App
+    .smth
+  navigation
+  router-view#main
+  #latest-news
+    news-widget
+  #footer
+    span Made by widetrace. Thanks to NHL Api
 </template>
 
 <script>
@@ -21,7 +26,9 @@ import IconLeague from '@/components/icons/IconLeague.vue';
 
 export default {
   components: {
-    Navigation, IconLeague, NewsWidget,
+    Navigation,
+    IconLeague,
+    NewsWidget,
   },
 };
 </script>
@@ -35,7 +42,7 @@ export default {
   display: grid;
   grid-template-areas:
     "header header header"
-    "nav news main"
+    "nav main news"
     "footer footer footer";
   grid-template-columns: 0.66fr 3fr 1fr;
   grid-template-rows: 0.33fr 4fr 0.33fr;
