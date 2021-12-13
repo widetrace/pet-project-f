@@ -1,20 +1,12 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import notification from '@/store/modules/notification';
-import game from './game';
-import logo from './logo';
+import { createStore } from 'vuex';
 
-Vue.use(Vuex);
-
-export default new Vuex.Store({
+export default createStore({
   state: {
-    selectedTeam: 16,
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+  },
+  actions: {
+  },
   modules: {
-    game,
-    logo,
-    notification,
   },
 });
