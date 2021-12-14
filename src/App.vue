@@ -1,10 +1,21 @@
 <template lang="pug">
-//- new component
-#nav
-  router-link(:to="{ name: 'Home' }") |
-  router-link(:to="{ name: 'About' }")
-router-view
+#page-body
+  Header
+  //- #nav
+  //-   router-link(:to="{ name: 'Home' }") |
+  //-   router-link(:to="{ name: 'About' }")
+  router-view
 </template>
+
+<script>
+import Header from '@/components/Header.vue';
+
+export default {
+  components: {
+    Header,
+  },
+};
+</script>
 
 <style lang="scss">
 #app {
