@@ -5,6 +5,8 @@
     p Navigation block
   #content
     router-view
+  #footer
+    p footer
 </template>
 
 <script>
@@ -25,10 +27,10 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  min-height: 100vh;
 }
 
 #page-body {
-  min-height: 100vh;
   display: grid;
   grid-template-areas:
     "header header"
@@ -59,11 +61,10 @@ export default {
 
 #content {
   grid-area: main;
-  // background: #fff;
-  // border-radius: 2px;
-  // display: inline-block;
-  // margin: 1rem;
-  // box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+#footer {
+  grid-area: footer;
 }
 
 #nav {
