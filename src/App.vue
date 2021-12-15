@@ -3,6 +3,10 @@
   Header
   #nav
     p Navigation block
+    router-link(:to="{ name: 'Home' }")
+      | Home
+    router-link(:to="{ name: 'Match', params: { id: 123 } }")
+      | Match
   #content
     router-view
   #footer
@@ -55,12 +59,13 @@ export default {
   background: #fff;
   border-radius: 2px;
   display: inline-block;
-  margin: 1rem;
+  // margin: 1rem;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 #content {
   grid-area: main;
+  margin-right: 4rem;
 }
 
 #footer {
@@ -68,6 +73,7 @@ export default {
 }
 
 #nav {
+  margin-left: 4rem;
   grid-area: nav;
   padding: 30px;
 
