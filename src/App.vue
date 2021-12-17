@@ -41,7 +41,7 @@ export default {
     "nav main"
     "footer footer";
   grid-template-columns: 0.66fr 3fr;
-  grid-template-rows: 0.33fr 4fr 0.33fr;
+  grid-template-rows: 200px 4fr 100px;
   grid-gap: 1rem;
 }
 
@@ -76,6 +76,7 @@ export default {
   margin-left: 4rem;
   grid-area: nav;
   padding: 30px;
+  height: 15vh;
 
   a {
     font-weight: bold;

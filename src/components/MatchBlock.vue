@@ -1,6 +1,6 @@
 <template lang="pug">
 router-link(
-  :to="{ name: 'Match', params: { id: 213 } }",
+  :to="{ name: 'Match', params: { id: item.games[0].gamePk } }",
   custom,
   v-slot="{ navigate }"
 )

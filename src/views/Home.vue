@@ -35,6 +35,14 @@ export default {
     const twoWeeksAhead = add(date, { weeks: 1 });
     const twoWeeksAheadFormat = format(twoWeeksAhead, 'yyyy-MM-dd');
 
+    // use Suspense or other for async setup
+    // try {
+    //   const test = await axios.get(`https://statsapi.web.nhl.com/api/v1/schedule?teamId=16&startDate=${twoWeeksAgoFormat}&endDate=${twoWeeksAheadFormat}`)
+
+    // } catch (error) {
+
+    // }
+
     axios
       .get(
         `https://statsapi.web.nhl.com/api/v1/schedule?teamId=16&startDate=${twoWeeksAgoFormat}&endDate=${twoWeeksAheadFormat}`,

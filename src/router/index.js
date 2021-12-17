@@ -19,6 +19,7 @@ const routes = [
     path: '/match/:id',
     name: 'Match',
     component: () => import(/* webChunkName: "match" */ '@/views/Match.vue'),
+    props: true,
   },
 ];
 
