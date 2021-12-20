@@ -4,35 +4,13 @@ div
   template(v-if="isReady")
     h3 Three stars of the match
     div(v-for="(item, index) in stars", :key="item.id")
-      | {{ starString(index) }}{{ item.fullName }}
-    div
-      h2 First period
-      ScoreBlock(
-        v-for="(item, index) in returnPeriodScore(1)",
-        :key="index",
-        :scoreData="item"
-      )
-    div
-      h2 Second period
-      ScoreBlock(
-        v-for="(item, index) in returnPeriodScore(2)",
-        :key="index",
-        :scoreData="item"
-      )
-    div
-      h2 Third period
-      ScoreBlock(
-        v-for="(item, index) in returnPeriodScore(3)",
-        :key="index",
-        :scoreData="item"
-      )
-    div
-      h2 Overtime
-      ScoreBlock(
-        v-for="(item, index) in returnPeriodScore(4)",
-        :key="index",
-        :scoreData="item"
-      )
+      p {{ starString(index) }}{{ item.fullName }}
+    Period(
+      v-for="(item, index) in playsByPeriods",
+      :key="index",
+      :item="item",
+      :index="index"
+    )
   template(v-else)
     p Loading
 </template>
@@ -41,7 +19,7 @@ div
 /* eslint-disable max-len */
 import axios from 'axios';
 import { computed, nextTick, ref } from 'vue';
-import ScoreBlock from '@/components/ScoreBlock.vue';
+import Period from '@/components/period/Period.vue';
 
 export default {
   props: {
@@ -51,13 +29,20 @@ export default {
     },
   },
   components: {
-    ScoreBlock,
+    Period,
   },
   setup(props) {
     const gameData = ref(null);
     const liveData = ref(null);
     const isReady = ref(false);
     const scorePlays = [];
+    const playsByPeriods = {
+      first: [],
+      second: [],
+      third: [],
+      ot: [],
+      other: [],
+    };
 
     const homeTeam = computed(() => {
       if (gameData.value) {
@@ -83,31 +68,41 @@ export default {
 
       plays.scoringPlays.forEach((play) => {
         const exactPlay = plays.allPlays[play];
+        console.log(exactPlay);
         const goalData = {
           stat: `${exactPlay.about.goals.home}:${exactPlay.about.goals.away}`,
           scorer: exactPlay.players[0].player.fullName,
           scorerGoalsTotal: exactPlay.players[0].seasonTotal,
           assistants: exactPlay.result.description.split('assists: ')[1] || '',
           teamId: exactPlay.team.id,
+          shotType: exactPlay.result.secondaryType,
+          strength: exactPlay.result.strength.name,
           about: exactPlay.about,
         };
         scorePlays.push(goalData);
       });
     };
 
-    const returnPeriodScore = (num) => {
-      switch (num) {
-        case 1:
-          return scorePlays.filter((score) => score.about.period === 1);
-        case 2:
-          return scorePlays.filter((score) => score.about.period === 2);
-        case 3:
-          return scorePlays.filter((score) => score.about.period === 3);
-        case 4:
-          return scorePlays.filter((score) => score.about.period === 4);
-        default:
-          return '';
-      }
+    const filterPlaysByPeriods = () => {
+      scorePlays.forEach((play) => {
+        switch (play.about.period) {
+          case 1:
+            playsByPeriods.first.push(play);
+            break;
+          case 2:
+            playsByPeriods.second.push(play);
+            break;
+          case 3:
+            playsByPeriods.third.push(play);
+            break;
+          case 4:
+            playsByPeriods.ot.push(play);
+            break;
+          default:
+            playsByPeriods.other.push(play);
+            break;
+        }
+      });
     };
 
     const starString = (place) => {
@@ -130,6 +125,7 @@ export default {
       gameData.value = data.gameData;
       liveData.value = data.liveData;
       filterPlays();
+      filterPlaysByPeriods();
       isReady.value = true;
     });
 
@@ -138,8 +134,8 @@ export default {
       homeTeam,
       awayTeam,
       stars,
-      returnPeriodScore,
       starString,
+      playsByPeriods,
     };
   },
 };

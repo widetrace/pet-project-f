@@ -7,7 +7,11 @@
     |
     | {{ scoreData.scorer }} ({{ scoreData.scorerGoalsTotal }}).
     |
+    | {{ scoreData.shotType }}.
+    |
     | Assistants: {{ scoreData.assistants }}.
+    |
+    | Strength: {{ scoreData.strength }}.
     |
     | Time: {{ returnPeriodTime(scoreData.about) }}
 </template>
