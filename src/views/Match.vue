@@ -1,32 +1,37 @@
 <template lang='pug'>
 div
-  h1 Match page {{ id }}
+  h1 Match page
   template(v-if="isReady")
     h3 Three stars of the match
     div(v-for="(item, index) in stars", :key="item.id")
       | {{ starString(index) }}{{ item.fullName }}
     div
       h2 First period
-      p {{ returnPeriodScore(1) }}
+      ScoreBlock(
+        v-for="(item, index) in returnPeriodScore(1)",
+        :key="index",
+        :scoreData="item"
+      )
     div
       h2 Second period
-      p {{ returnPeriodScore(2) }}
+      ScoreBlock(
+        v-for="(item, index) in returnPeriodScore(2)",
+        :key="index",
+        :scoreData="item"
+      )
     div
       h2 Third period
-      p {{ returnPeriodScore(3) }}
+      ScoreBlock(
+        v-for="(item, index) in returnPeriodScore(3)",
+        :key="index",
+        :scoreData="item"
+      )
     div
       h2 Overtime
-      p {{ returnPeriodScore(4) }}
-    //- div(v-for="(score, index) in scores", :key="index")
-    //-   p {{ score }}
-    //-   p {{ score.stat }} | {{ score.scorer }} ({{ score.scorerGoalsTotal }})
-    .homeTeam
-      img(
-        :src="`https://www-league.nhlstatic.com/images/logos/teams-current-primary-light/${homeTeam.id}.svg`"
-      )
-    .awayTeam
-      img(
-        :src="`https://www-league.nhlstatic.com/images/logos/teams-current-primary-light/${awayTeam.id}.svg`"
+      ScoreBlock(
+        v-for="(item, index) in returnPeriodScore(4)",
+        :key="index",
+        :scoreData="item"
       )
   template(v-else)
     p Loading
@@ -36,6 +41,7 @@ div
 /* eslint-disable max-len */
 import axios from 'axios';
 import { computed, nextTick, ref } from 'vue';
+import ScoreBlock from '@/components/ScoreBlock.vue';
 
 export default {
   props: {
@@ -43,6 +49,9 @@ export default {
       type: String,
       default: null,
     },
+  },
+  components: {
+    ScoreBlock,
   },
   setup(props) {
     const gameData = ref(null);

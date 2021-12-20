@@ -5,7 +5,9 @@ router-link(
   v-slot="{ navigate }"
 )
   #game(@click="navigate")
-    p.date Date: {{ item.date }}
+    p.score(v-if="item.games[0].status.statusCode == 7") {{ formatScore(item.games[0].teams) }}
+    p.score(v-if="item.games[0].status.statusCode == 9") PPD
+    p.date Date: {{ format(new Date(item.date), 'dd-MM-yyyy') }}
     p.time Time: {{ format(new Date(item.games[0].gameDate), 'HH:mm') }}
     h3.awayTeam Away Team
       .teamLogo
@@ -21,12 +23,7 @@ router-link(
         )
       p {{ item.games[0].teams.home.team.name }}
       p {{ formatRecord(item.games[0].teams.home.leagueRecord) }}
-    #game-block__score.score(v-if="item.games[0].status.statusCode == 7")
-      p Score: {{ formatScore(item.games[0].teams) }}
-    #game-block__venue.venue(
-      :class="item.games[0].status.statusCode == 7 ? '' : 'score'"
-    )
-      //- p Venue: {{ item.games[0].venue }}
+    #game-block__venue.venue
       p Venue: {{ item.games[0].venue.name }}
 </template>
 
@@ -63,11 +60,12 @@ export default {
 
 <style lang="scss" scoped>
 #game {
+  position: relative;
   display: grid;
   grid-template-areas:
     "date away home"
     "time away home"
-    "venue score score";
+    "venue away home";
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   border-radius: 2px;
@@ -98,15 +96,21 @@ export default {
   grid-area: venue;
 }
 
-.score {
-  grid-area: score;
-}
-
 .awayTeam {
   grid-area: away;
 }
 
 .homeTeam {
   grid-area: home;
+}
+
+.score {
+  position: absolute;
+  right: 10%;
+  bottom: -20%;
+  margin: 0;
+  color: rgba(0, 0, 0, 0.12);
+  font-size: 150px;
+  z-index: 1;
 }
 </style>

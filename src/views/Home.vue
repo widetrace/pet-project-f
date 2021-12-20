@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { reactive, toRefs } from 'vue';
+import { nextTick, reactive, toRefs } from 'vue';
 import { subDays, add, format } from 'date-fns';
 import axios from 'axios';
 
@@ -25,6 +25,7 @@ export default {
   setup() {
     const state = reactive({
       data: null,
+      isReady: false,
     });
 
     const date = new Date();
@@ -35,22 +36,12 @@ export default {
     const twoWeeksAhead = add(date, { weeks: 1 });
     const twoWeeksAheadFormat = format(twoWeeksAhead, 'yyyy-MM-dd');
 
-    // use Suspense or other for async setup
-    // try {
-    //   const test = await axios.get(`https://statsapi.web.nhl.com/api/v1/schedule?teamId=16&startDate=${twoWeeksAgoFormat}&endDate=${twoWeeksAheadFormat}`)
-
-    // } catch (error) {
-
-    // }
-
-    axios
-      .get(
+    nextTick(async () => {
+      const { data } = await axios.get(
         `https://statsapi.web.nhl.com/api/v1/schedule?teamId=16&startDate=${twoWeeksAgoFormat}&endDate=${twoWeeksAheadFormat}`,
-      )
-      .then((res) => {
-        state.data = res.data;
-      })
-      .catch((err) => console.log(err));
+      );
+      state.data = data;
+    });
 
     return {
       ...toRefs(state),
