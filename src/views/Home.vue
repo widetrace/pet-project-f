@@ -1,92 +1,60 @@
 <template lang="pug">
-  .home
-    GameCard(
-      v-if="nextGameStatus",
-      :game="nextGame"
-      game-status="next") {{ nextTitle }}
-    EmptyCard(v-else) No info about next game
-    GameCard(
-      v-if="previousGameStatus",
-      :game="gameInfo('previous')",
-      game-status="previous") {{ prevTitle }}
-    EmptyCard(v-else) No info about previous game
+#home
+  #game-block
+    template(v-if="data")
+      MatchBlock(
+        v-for="(item, index) in data.dates",
+        :key="index",
+        :item="item"
+      )
+    template(v-else)
+      h2 No games
 </template>
 
 <script>
-// @ is an alias to /src
-import GameCard from '@/components/GameCard.vue';
-import EmptyCard from '@/components/EmptyCard.vue';
-import { mapGetters } from 'vuex';
+import { nextTick, reactive, toRefs } from 'vue';
+import { subDays, add, format } from 'date-fns';
+import axios from 'axios';
+
+import MatchBlock from '@/components/MatchBlock.vue';
 
 export default {
-  name: 'Home',
-  props: {
-    nextGameStatus: {
-      required: true,
-      type: Boolean,
-    },
-    previousGameStatus: {
-      required: true,
-      type: Boolean,
-    },
-  },
   components: {
-    GameCard, EmptyCard,
+    MatchBlock,
   },
-  methods: {
-    getNextTitle() {
-      this.$store
-        .dispatch('game/fetchRecapText', {
-          link: this.nextGame.content.link,
-          status: 'next',
-        })
-        // eslint-disable-next-line no-console
-        .catch((err) => console.error(err));
-    },
-  },
-  computed: {
-    ...mapGetters(
-      {
-        gameInfo: 'game/info',
-        gameTitle: 'game/title',
-      },
-    ),
-    prevGame() {
-      return this.gameInfo('previous');
-    },
-    prevTitle() {
-      return this.gameTitle('previous');
-    },
-    nextGame() {
-      return this.gameInfo('next');
-    },
-    nextTitle() {
-      // title from api still testing
-      // this.getNextTitle()
-      return `${this.nextGame.teams.home.team.name} will face ${this.nextGame.teams.away.team.name} at ${this.nextGame.venue.name}`;
-    },
+  setup() {
+    const state = reactive({
+      data: null,
+      isReady: false,
+    });
+
+    const date = new Date();
+
+    const twoWeeksAgo = subDays(date, 7);
+    const twoWeeksAgoFormat = format(twoWeeksAgo, 'yyyy-MM-dd');
+
+    const twoWeeksAhead = add(date, { weeks: 1 });
+    const twoWeeksAheadFormat = format(twoWeeksAhead, 'yyyy-MM-dd');
+
+    nextTick(async () => {
+      const { data } = await axios.get(
+        `https://statsapi.web.nhl.com/api/v1/schedule?teamId=16&startDate=${twoWeeksAgoFormat}&endDate=${twoWeeksAheadFormat}`,
+      );
+      state.data = data;
+    });
+
+    return {
+      ...toRefs(state),
+      format,
+    };
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.home {
-  display: flex;
-  // flex-flow: row nowrap;
-  flex-flow: column nowrap;
-  justify-content: space-between;
-  div:first-child {
-    margin-right: 25px;
-  }
-}
-
-@media screen and (max-width: 1280px) {
-  .home {
-    flex-flow: column nowrap;
-    div:first-child {
-      margin-right: 0px;
-      margin-bottom: 15px;
-  }
-  }
+#game-block {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
 }
 </style>

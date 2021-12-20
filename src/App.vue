@@ -1,62 +1,48 @@
 <template lang="pug">
-#app
-  #header
-    router-link(to="/")
-      icon-base(
-        width="100px",
-        height="100px",
-        iconColor="black",
-        iconTitle="NHL Logo"
-      )
-        icon-league
-    h1 NHL Web App
-    .smth
-  navigation
-  router-view#main
-  #latest-news
-    news-widget
+#page-body
+  Header
+  #nav
+    p Navigation block
+    router-link(:to="{ name: 'Home' }")
+      | Home
+    router-link(:to="{ name: 'Match', params: { id: 123 } }")
+      | Match
+  #content
+    router-view
   #footer
-    span Made by widetrace. Thanks to NHL Api
+    p footer
 </template>
 
 <script>
-import Navigation from '@/components/Navigation.vue';
-import NewsWidget from '@/components/NewsWidget.vue';
-import IconLeague from '@/components/icons/IconLeague.vue';
+import Header from '@/components/Header.vue';
 
 export default {
   components: {
-    Navigation,
-    IconLeague,
-    NewsWidget,
+    Header,
   },
 };
 </script>
 
 <style lang="scss">
 #app {
-  font-family: Montserrat;
-  min-height: 100vh;
+  background: #e2e1e0;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: $primary;
-  display: grid;
-  grid-template-areas:
-    "header header header"
-    "nav main news"
-    "footer footer footer";
-  grid-template-columns: 0.66fr 3fr 1fr;
-  grid-template-rows: 0.33fr 4fr 0.33fr;
-  grid-gap: 3vh 5vw;
-  background-color: $background;
+  color: #2c3e50;
+  min-height: 100vh;
 }
 
-#header,
-#nav,
-#footer,
-#latest-news {
-  border-radius: 4px;
-  box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8;
-  background-color: white;
+#page-body {
+  display: grid;
+  grid-template-areas:
+    "header header"
+    "nav main"
+    "footer footer";
+  grid-template-columns: 0.66fr 3fr;
+  grid-template-rows: 115px 4fr 100px;
+  grid-gap: 1rem;
 }
 
 #header {
@@ -67,44 +53,38 @@ export default {
   align-items: center;
 }
 
+#content,
 #nav {
-  margin-left: 2vw;
+  background: #fff;
+  background: #fff;
+  border-radius: 2px;
+  display: inline-block;
+  // margin: 1rem;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
-#main {
+#content {
   grid-area: main;
-  margin-right: 2vw;
-}
-
-#latest-news {
-  grid-area: news;
+  margin-right: 4rem;
 }
 
 #footer {
   grid-area: footer;
-  background-color: white;
-  padding-top: 10px;
-  span {
-    margin: 10px;
-  }
 }
 
-h1 {
-  font-size: 1.5em;
-}
+#nav {
+  margin-left: 4rem;
+  grid-area: nav;
+  padding: 30px;
+  height: 15vh;
 
-h2 {
-  width: 100%;
-  background-color: $background;
-  padding-top: 0.83em;
-  padding-bottom: 0.83em;
-  margin: 0;
-}
+  a {
+    font-weight: bold;
+    color: #2c3e50;
 
-@media screen and (max-width: 1280px) {
-  #app {
-    grid-gap: 3vh 2.5vw;
-    grid-template-columns: 0.33fr 3.33fr 1fr;
+    &.router-link-exact-active {
+      color: #42b983;
+    }
   }
 }
 </style>
