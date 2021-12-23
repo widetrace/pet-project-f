@@ -68,7 +68,6 @@ export default {
 
       plays.scoringPlays.forEach((play) => {
         const exactPlay = plays.allPlays[play];
-        console.log(exactPlay);
         const goalData = {
           stat: `${exactPlay.about.goals.home}:${exactPlay.about.goals.away}`,
           scorer: exactPlay.players[0].player.fullName,
