@@ -56,10 +56,8 @@ export default {
 #content,
 #nav {
   background: #fff;
-  background: #fff;
   border-radius: 2px;
   display: inline-block;
-  // margin: 1rem;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
@@ -70,10 +68,8 @@ export default {
 
 #footer {
   grid-area: footer;
-  border-radius: 4px;
-  box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8;
-  background-color: white;
-  padding: 0 10%;
+  box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
+  background: #fff;
 }
 
 #nav {

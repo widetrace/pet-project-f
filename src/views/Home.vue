@@ -13,8 +13,8 @@
 
 <script>
 import { nextTick, reactive, toRefs } from 'vue';
-import axios from 'axios';
 import { twoWeeksAgo, twoWeeksAhead } from '@/use/dateFormat';
+import getGames from '@/use/getScheduledGames';
 
 import MatchBlock from '@/components/MatchBlock.vue';
 
@@ -34,10 +34,7 @@ export default {
     const ahead = twoWeeksAhead(date);
 
     nextTick(async () => {
-      const { data } = await axios.get(
-        `https://statsapi.web.nhl.com/api/v1/schedule?teamId=16&startDate=${ago}&endDate=${ahead}`,
-      );
-      state.data = data;
+      state.data = await getGames(ago, ahead);
       state.isReady = true;
     });
 
