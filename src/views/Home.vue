@@ -13,8 +13,8 @@
 
 <script>
 import { nextTick, reactive, toRefs } from 'vue';
-import { subDays, add, format } from 'date-fns';
 import axios from 'axios';
+import { twoWeeksAgo, twoWeeksAhead } from '@/use/dateFormat';
 
 import MatchBlock from '@/components/MatchBlock.vue';
 
@@ -30,22 +30,18 @@ export default {
 
     const date = new Date();
 
-    const twoWeeksAgo = subDays(date, 7);
-    const twoWeeksAgoFormat = format(twoWeeksAgo, 'yyyy-MM-dd');
-
-    const twoWeeksAhead = add(date, { weeks: 1 });
-    const twoWeeksAheadFormat = format(twoWeeksAhead, 'yyyy-MM-dd');
+    const ago = twoWeeksAgo(date);
+    const ahead = twoWeeksAhead(date);
 
     nextTick(async () => {
       const { data } = await axios.get(
-        `https://statsapi.web.nhl.com/api/v1/schedule?teamId=16&startDate=${twoWeeksAgoFormat}&endDate=${twoWeeksAheadFormat}`,
+        `https://statsapi.web.nhl.com/api/v1/schedule?teamId=16&startDate=${ago}&endDate=${ahead}`,
       );
       state.data = data;
     });
 
     return {
       ...toRefs(state),
-      format,
     };
   },
 };
