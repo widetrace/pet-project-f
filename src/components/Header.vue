@@ -12,12 +12,6 @@ export default {
   setup() {
     // eslint-disable-next-line global-require
     const leagueIcon = require('@/assets/LeagueIcon.svg');
-    // fetch('https://www-league.nhlstatic.com/images/logos/teams-current-primary-dark/15.svg')
-    //   .then((response) => {
-    //     if (response.ok) return response;
-    //     throw new Error('Network response was not ok.');
-    //   })
-    //   .then((data) => console.log(data.contents));
 
     return {
       leagueIcon,
