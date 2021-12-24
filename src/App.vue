@@ -70,6 +70,10 @@ export default {
 
 #footer {
   grid-area: footer;
+  border-radius: 4px;
+  box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8;
+  background-color: white;
+  padding: 0 10%;
 }
 
 #nav {

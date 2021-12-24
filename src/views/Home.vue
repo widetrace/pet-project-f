@@ -1,7 +1,7 @@
 <template lang="pug">
 #home
   #game-block
-    template(v-if="data")
+    template(v-if="isReady")
       MatchBlock(
         v-for="(item, index) in data.dates",
         :key="index",
@@ -38,6 +38,7 @@ export default {
         `https://statsapi.web.nhl.com/api/v1/schedule?teamId=16&startDate=${ago}&endDate=${ahead}`,
       );
       state.data = data;
+      state.isReady = true;
     });
 
     return {
