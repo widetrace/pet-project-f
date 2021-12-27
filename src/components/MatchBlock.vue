@@ -7,15 +7,15 @@ router-link(
   #game(@click="navigate")
     p.score(v-if="item.games[0].status.statusCode == 7") {{ formatScore(item.games[0].teams) }}
     p.score(v-if="item.games[0].status.statusCode == 9") PPD
-    p.date Date: {{ format(new Date(item.date), 'dd-MM-yyyy') }}
-    p.time Time: {{ format(new Date(item.games[0].gameDate), 'HH:mm') }}
+    p.date Date: {{ date }}
+    p.time Time: {{ time }}
     h3.awayTeam Away Team
       .teamLogo
         img(
           :src="`https://www-league.nhlstatic.com/images/logos/teams-current-primary-light/${item.games[0].teams.away.team.id}.svg`"
         )
-      p {{ item.games[0].teams.away.team.name }}
-      p {{ formatRecord(item.games[0].teams.away.leagueRecord) }}
+      p(v-if="!isHeader") {{ item.games[0].teams.away.team.name }}
+      p(v-if="!isHeader") {{ formatRecord(item.games[0].teams.away.leagueRecord) }}
     h3.homeTeam Home Team
       .teamLogo
         img(
@@ -28,15 +28,18 @@ router-link(
 </template>
 
 <script>
-import { format } from 'date-fns';
+import { formatDate, formatTime } from '@/use/dateFormat';
 
 export default {
   props: {
     item: {
       default: {},
     },
+    isHeader: {
+      default: false,
+    },
   },
-  setup() {
+  setup(props) {
     // форматируем статистику команды в формат ПОБЕДЫ-ПОРАЖЕНИЯ-ПОРАЖЕНИЕвДОПвремя
     const formatRecord = (leagueRecord) => {
       const { wins, losses, ot } = leagueRecord;
@@ -49,10 +52,14 @@ export default {
       return `${away.score}:${home.score}`;
     };
 
+    const date = formatDate(new Date(props.item.date));
+    const time = formatTime(new Date(props.item.games[0].gameDate));
+
     return {
       formatScore,
       formatRecord,
-      format,
+      date,
+      time,
     };
   },
 };
