@@ -13,8 +13,9 @@
 
 <script>
 import { nextTick, reactive, toRefs } from 'vue';
+import { useStore } from 'vuex';
+
 import { twoWeeksAgo, twoWeeksAhead } from '@/use/dateFormat';
-import getGames from '@/use/getScheduledGames';
 
 import MatchBlock from '@/components/MatchBlock.vue';
 
@@ -28,13 +29,16 @@ export default {
       isReady: false,
     });
 
+    const store = useStore();
+
     const date = new Date();
 
     const ago = twoWeeksAgo(date);
     const ahead = twoWeeksAhead(date);
 
     nextTick(async () => {
-      state.data = await getGames(ago, ahead);
+      await store.dispatch('schedule/fetchGames', { startDate: ago, endDate: ahead });
+      state.data = store.getters['schedule/games'];
       state.isReady = true;
     });
 
