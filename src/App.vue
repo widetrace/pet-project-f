@@ -41,16 +41,12 @@ export default {
     "nav main"
     "footer footer";
   grid-template-columns: 0.66fr 3fr;
-  grid-template-rows: 115px 4fr 100px;
+  // grid-template-rows: 115px 4fr 100px;
   grid-gap: 1rem;
 }
 
 #header {
   grid-area: header;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  align-items: center;
 }
 
 #content,
