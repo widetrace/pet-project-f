@@ -19,6 +19,7 @@ div
 /* eslint-disable max-len */
 import axios from 'axios';
 import { computed, nextTick, ref } from 'vue';
+import { useStore } from 'vuex';
 import Period from '@/components/period/Period.vue';
 
 export default {
@@ -26,12 +27,15 @@ export default {
     id: {
       type: String,
       default: null,
+      required: true,
     },
   },
   components: {
     Period,
   },
   setup(props) {
+    const homeTeam = ref('No data');
+    const awayTeam = ref('No data');
     const gameData = ref(null);
     const liveData = ref(null);
     const isReady = ref(false);
@@ -44,19 +48,7 @@ export default {
       other: [],
     };
 
-    const homeTeam = computed(() => {
-      if (gameData.value) {
-        return gameData.value.teams.home;
-      }
-      return 'no data';
-    });
-
-    const awayTeam = computed(() => {
-      if (gameData.value) {
-        return gameData.value.teams.away;
-      }
-      return 'no data';
-    });
+    const store = useStore();
 
     const stars = computed(() => {
       const { firstStar, secondStar, thirdStar } = liveData.value.decisions;
@@ -118,11 +110,14 @@ export default {
     };
 
     nextTick(async () => {
+      await store.dispatch('scores/fetchDetails', props.id);
       const { data } = await axios.get(
         `https://statsapi.web.nhl.com/api/v1/game/${props.id}/feed/live`,
       );
       gameData.value = data.gameData;
       liveData.value = data.liveData;
+      homeTeam.value = store.getters['scores/homeTeam'];
+      awayTeam.value = store.getters['scores/awayTeam'];
       filterPlays();
       filterPlaysByPeriods();
       isReady.value = true;
