@@ -1,4 +1,4 @@
-import fetchSchedule from '@/api/fetchMain';
+import { fetchGames } from '@/api/fetchMain';
 
 export default {
   namespaced: true,
@@ -11,9 +11,9 @@ export default {
     },
   },
   actions: {
-    async fetchGames({ commit }, { startDate, endDate }) {
+    async fetchSchedule({ commit }, { startDate, endDate }) {
       try {
-        const data = await fetchSchedule(startDate, endDate);
+        const data = await fetchGames(startDate, endDate);
         commit('setSchedule', data);
         return true;
       } catch (error) {
@@ -23,7 +23,10 @@ export default {
   },
   getters: {
     games(state) {
-      return state.scheduledGames;
+      if (state.scheduledGames) {
+        return state.scheduledGames;
+      }
+      return false;
     },
   },
 };
