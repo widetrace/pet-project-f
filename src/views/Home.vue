@@ -37,7 +37,7 @@ export default {
     const ahead = twoWeeksAhead(date);
 
     nextTick(async () => {
-      await store.dispatch('schedule/fetchGames', { startDate: ago, endDate: ahead });
+      await store.dispatch('schedule/fetchSchedule', { startDate: ago, endDate: ahead });
       state.data = store.getters['schedule/games'];
       state.isReady = true;
     });
